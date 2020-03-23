@@ -23,6 +23,7 @@ function loop($sleep = 600)
             }
         }
 
+	makeUserActivity();
         echo "New iteration\n";
         //sleep($sleep);
     }
