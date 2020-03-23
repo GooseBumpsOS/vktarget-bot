@@ -2,20 +2,40 @@
 
 define('api_key', '23f2b13416cd5bd6b7af0017f8fce3b86478491f8eee9a2267c39e8a267441e929e273f2670d94a283a73');
 
-$rawHtml = _sendReqToVktarget('https://vktarget.ru/list/');
-$tasks = explode(';', explode('LIST_TABLE = ', $rawHtml)[1]);
-$tasks = json_decode($tasks[0], true);
 
-for ($i = 1; $i < count($tasks); $i++) {
+loop();
 
-    if (preg_match('/vk\.com/m', $tasks[$i]['url'])) {
-        $id = $tasks[$i]['id'];
-        makeTask($tasks[$i]['url'], $tasks[$i]['type_name'] . ' ' . $tasks[$i]['type_name_link']);
-        approveTask($id);
+function loop($sleep = 600)
+{
+    for (; ;) {
+
+        $rawHtml = _sendReqToVktarget('https://vktarget.ru/list/');
+//die($rawHtml);
+        $tasks = explode(';', explode('LIST_TABLE = ', $rawHtml)[1]);
+        $tasks = json_decode($tasks[0], true);
+
+        for ($i = 1; $i < count($tasks); $i++) {
+
+            if (preg_match('/vk\.com/m', $tasks[$i]['url'])) {
+                $id = $tasks[$i]['id'];
+                makeTask($tasks[$i]['url'], $tasks[$i]['type_name'] . ' ' . $tasks[$i]['type_name_link']);
+                approveTask($id);
+            }
+        }
+
+        echo "New iteration\n";
+        //sleep($sleep);
     }
+}
 
+function makeUserActivity(){
+
+	_sendReqToVktarget(' https://vktarget.ru/api/all.php', ['action' => 'active_user', 'k' => mt_rand(18, 100)]);
+
+	sleep(rand(10,60));
 
 }
+
 function approveTask($id)
 {
 
@@ -80,8 +100,8 @@ function _sendReqToVktarget($url, $params = [])
     curl_setopt($ch, CURLOPT_REFERER, 'http://in.3level.ru');
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-    curl_setopt($ch, CURLOPT_COOKIE, "PHPSESSID=b47ied42u9hh7i1o59pul0ieji; ref_page=https%3A%2F%2Fyandex.ru%2F; _ga=GA1.2.86841377.1584923293; _gid=GA1.2.1951376851.1584923293; _ym_uid=1584923293405960383; _ym_d=1584923293; _ym_isad=2; COPINY_AUTH=SFBZMFRiNmNZTFA1eUN0bFRnb0xJQT09; io=PoO3rjEDVX5Gat-_SAly; _gat_gtag_UA_55670847_1=1; _gat=1");
-    if (isset($params)) {
+    curl_setopt($ch, CURLOPT_COOKIE, "PHPSESSID=b47ied42u9hh7i1o59pul0ieji; ref_page=https%3A%2F%2Fyandex.ru%2F; _ga=GA1.2.86841377.1584923293; _gid=GA1.2.1951376851.1584923293; _ym_uid=1584923293405960383; _ym_d=1584923293; _ym_isad=2; COPINY_AUTH=SFBZMFRiNmNZTFA1eUN0bFRnb0xJQT09; io=78fviUjXh6j4xJyERJwZ; _gat_gtag_UA_55670847_1=1; _gat=1");
+    if (count($params) > 0) {
 
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS,
