@@ -33,7 +33,6 @@ class VkTargetParser
         for (; ;) {
 
             $rawHtml = $this->_sendReqToVktarget('https://vktarget.ru/list/');
-            die($rawHtml);
             $tasks = explode(';', explode('LIST_TABLE = ', $rawHtml)[1]);
             $tasks = json_decode($tasks[0], true);
             unset($rawHtml);
@@ -108,7 +107,7 @@ class VkTargetParser
     private function _makeUserActivity()
     {
 
-        _sendReqToVktarget('https://vktarget.ru/api/all.php', ['action' => 'active_user', 'k' => mt_rand(18, 100)]);
+        $this->_sendReqToVktarget('https://vktarget.ru/api/all.php', ['action' => 'active_user', 'k' => mt_rand(18, 100)]);
 
         sleep(rand(10, 60));
 
@@ -117,7 +116,7 @@ class VkTargetParser
     private function _approveTask($id)
     {
 
-        _sendReqToVktarget('https://vktarget.ru/api/all.php?action=check_task', ['tid' => $id, 'host_state' => 'vktarget.ru']);
+        $this->_sendReqToVktarget('https://vktarget.ru/api/all.php?action=check_task', ['tid' => $id, 'host_state' => 'vktarget.ru']);
 
     }
 
