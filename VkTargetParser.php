@@ -33,7 +33,6 @@ class VkTargetParser
         for (; ;) {
 
             $rawHtml = $this->_sendReqToVktarget('https://vktarget.ru/list/');
-            die($rawHtml);
             $tasks = explode(';', explode('LIST_TABLE = ', $rawHtml)[1]);
             $tasks = json_decode($tasks[0], true);
             unset($rawHtml);
@@ -153,7 +152,7 @@ class VkTargetParser
 
         if (strpos($last_url, 'login') !== false && $needLogin == true) {
 
-            $this->sendTgMsg('Куки устрали в файле ' . getcwd() . ' ;  У процеса с pid: ' . getmypid());
+            $this->sendTgMsg('Куки устарели в файле ' . getcwd() . ' ;  У процеса с pid: ' . getmypid());
 
             throw new \Exception('Куки устарели');
             die();
