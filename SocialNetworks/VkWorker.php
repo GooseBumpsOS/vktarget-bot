@@ -3,6 +3,7 @@
 namespace App\SocialNetworks;
 
 require_once 'TelegramMessage.php';
+require_once 'TaskManagerInterface.php';
 
 use App\Notifier\TelegramMessage;
 

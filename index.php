@@ -2,8 +2,8 @@
 
 include 'VkTargetParser.php';
 
-$main = new \App\VkTargetParser('16c9d9537f@emailtown.club', '16c9d9537f@emailtown.club');
-$main->loop(0);
+$main = new \App\VkTargetParser('PHPSESSID=v31c7q6j3rpkg522eorrdqnqst;');
+$main->loop(60);
 
 
 //https://api.vk.com/method/groups.join?group_id=191672960&not_sure=1&access_token=23f2b13416cd5bd6b7af0017f8fce3b86478491f8eee9a2267c39e8a267441e929e273f2670d94a283a73&v=5.103
