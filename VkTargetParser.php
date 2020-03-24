@@ -152,7 +152,7 @@ class VkTargetParser
 
         if (strpos($last_url, 'login') !== false && $needLogin == true) {
 
-            $this->sendTgMsg('Куки устрали в файле ' . getcwd() . ' ;  У процеса с pid: ' . getmypid());
+            $this->sendTgMsg('Куки устарели в файле ' . getcwd() . ' ;  У процеса с pid: ' . getmypid());
 
             throw new \Exception('Куки устарели');
             die();
