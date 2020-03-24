@@ -7,6 +7,8 @@ require_once 'TaskManagerInterface.php';
 
 use App\Notifier\TelegramMessage;
 
+define('api_key', '23f2b13416cd5bd6b7af0017f8fce3b86478491f8eee9a2267c39e8a267441e929e273f2670d94a283a73');
+
 class VkWorker implements TaskManagerInterface
 {
     use TelegramMessage;
