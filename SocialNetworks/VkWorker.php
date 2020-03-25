@@ -36,8 +36,10 @@ class VkWorker implements TaskManagerInterface
                 break;
 //        case 'Рассказать о группе':
 //            break;
-//        case 'Добавить в друзья':
-//            break;
+        case preg_match('/друзья/m', $type):
+            preg_match('/[^\/id]+$/', $link, $res);
+            $this->_vkApiGenerator('friends.add', ['user_id' => $res[0], 'text' => 'vktarget ' . rand()]);
+            break;
             default:
                 $this->sendTgMsg('Что-то новенькое: ' . $link . "    " . $type);
                 break;
