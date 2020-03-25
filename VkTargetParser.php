@@ -28,7 +28,7 @@ class VkTargetParser
 
     }
 
-    public function loop($sleep = 600)
+    public function loop()
     {
         for (; ;) {
 
@@ -49,9 +49,8 @@ class VkTargetParser
 
                 }
             }
-
+            $this->_makeUserActivity();
             echo "New iteration\n";
-            sleep($sleep);
         }
     }
 
@@ -101,15 +100,17 @@ class VkTargetParser
         $social = $this->factory->generate($socialNetwork);
         $social->makeTask($link, $task);
         $this->_approveTask($id);
-        $this->_makeUserActivity();
     }
 
     private function _makeUserActivity()
     {
+        for ($i = 0; $i < 20; $i++){
 
-        $this->_sendReqToVktarget('https://vktarget.ru/api/all.php', ['action' => 'active_user', 'k' => mt_rand(18, 100)]);
+            $this->_sendReqToVktarget('https://vktarget.ru/api/all.php', ['action' => 'active_user', 'k' => mt_rand(18, 100)]);
 
-        sleep(rand(10, 60));
+            sleep(rand(2,6));
+
+        }
 
     }
 
