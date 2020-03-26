@@ -254,6 +254,20 @@ class JSONDB {
 		return strcasecmp((string)$a, (string)$b);
 	}
 
+    private function obj_to_array( $obj ) {
+        // Not an array or object? Return back what was given
+        if( !is_array( $obj ) && !is_object( $obj ) )
+            return $obj;
+
+        $arr = (array) $obj;
+
+        foreach( $arr as $key => $value ) {
+            $arr[ $key ] = $this->obj_to_array( $value );
+        }
+
+        return $arr;
+    }
+
 	/**
 	 * Validates and fetch out the data for manipulation
 	 * 
@@ -278,9 +292,9 @@ class JSONDB {
 				
 				return false;
 			}, ARRAY_FILTER_USE_BOTH );
-			
+
 			// Make sure every  object is turned to array here.
-			return array_values( obj_to_array( $r ) );
+			return array_values( $this->obj_to_array( $r ) );
 		}
 	}
 

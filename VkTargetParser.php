@@ -17,12 +17,12 @@ class VkTargetParser
 
     use TelegramMessage;
 
-    public function __construct($login, $pass)
+    public function __construct(Auth $auth)
     {
-        $this->login = $login;
-        $this->pass = $pass;
+        $this->login = $auth->getVktarget('login');
+        $this->pass = $auth->getVktarget('pass');
 
-        $this->factory = new SocialFactory();
+        $this->factory = new SocialFactory($auth);
 
         $this->_login();
 
@@ -159,10 +159,10 @@ class VkTargetParser
 
         if (strpos($last_url, 'login') !== false && $needLogin == true) {
 
-            $this->sendTgUniqueNotification('Куки устарели в файле ' . getcwd() . ' ;  У процеса с pid: ' . getmypid());
+            $this->_login();
 
-            throw new \Exception('Куки устарели');
-            die();
+            return $this->_sendReqToVktarget($url, $params, $needLogin, $needReturnHeader, $headers , $connectionTimeOut);
+
 
         }
 

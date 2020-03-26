@@ -9,6 +9,14 @@ use App\SocialNetworks\VkWorker;
 
 class SocialFactory
 {
+    private $auth;
+
+    public function __construct(Auth $auth)
+    {
+
+        $this->auth = $auth;
+
+    }
 
     public function generate($socialNetwork): TaskManagerInterface
     {
@@ -16,7 +24,7 @@ class SocialFactory
         switch ($socialNetwork) {
 
             case 'vk':
-                $social = new VkWorker();
+                $social = new VkWorker($this->auth->getVkAuth('token'));
                 break;
 
             default:
