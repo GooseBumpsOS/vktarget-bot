@@ -114,6 +114,12 @@ class VkTargetParser
 
     }
 
+    private function withdraw(){
+
+        //TODO сделать функцию вывода
+
+    }
+
     private function _approveTask($id)
     {
 
