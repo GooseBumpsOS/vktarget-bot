@@ -6,8 +6,6 @@ require_once 'Auth.php';
 $main = new \App\VkTargetParser(new \App\Auth());
 $main->loop();
 
-//TODO сделать крипт для копирования данных из бд
-
 //16c9d9537f@emailtown.club
 
 //77081267010
