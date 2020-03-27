@@ -8,5 +8,20 @@ $main->loop();
 
 //16c9d9537f@emailtown.club
 
-//77081267010
-//50dadbb1b3fdc314aa3abd
+
+//new mail
+//grisha.gukov@mail.ru
+//200393PoI
+
+//vk
+//959780904914:glSp2YupsyeN
+
+
+//Twitter
+//380994581733
+//d039eef95b@emailtown.club
+//200393PoI
+//TODO Сделать класс для ОК
+//TODO Сделать функцию вывода
+//TODO почта на домене
+//TODO ТГ бот для получения кода с почты

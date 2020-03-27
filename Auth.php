@@ -32,12 +32,14 @@ class Auth
         else
             throw new \Exception('Проблемы в БД, вернулся пустой результат');
 
+        $db->update(['isUse' => true])->from(tableName)->where(['isUse' => false])->get();
+
         switch (true) {
 
             case isset($result['Vk']):
                 $this->setVkAuth($result['Vk']);
-            case isset($result['Twitter']):
-                $this->setTwitter($result['Twitter']);
+//            case isset($result['Twitter']):
+//                $this->setTwitter($result['Twitter']);
             case isset($result['Vktarget']):
                 $this->setVktarget($result['Vktarget']);
         }
