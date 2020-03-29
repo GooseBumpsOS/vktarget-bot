@@ -483,6 +483,7 @@ CREATE TABLE `" . $table . "`
 		$content = $this->_process_order_by( $content );
 		
 		$this->flush_indexes( true );
+		$content = $this->obj_to_array($content);
 		return $content;
 	}
 } 

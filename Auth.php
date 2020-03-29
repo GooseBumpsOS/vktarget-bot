@@ -27,6 +27,8 @@ class Auth
         $db = new JSONDB();
         $result = $db->select('*')->from(tableName)->get();
 
+        var_dump($result);
+
         if (count($result) > 0 && !is_null($result))
             $result = $result[0];
         else
