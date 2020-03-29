@@ -131,6 +131,8 @@ class VkTargetParser
     private function _withdraw($sum, $wallet = '410018224994438')
     {
 
+        $date = time();//TIMESTAMP for bot search of command
+
         $this->_sendReqToVktarget('https://vktarget.ru/api/all.php?no_cache=0.981409013479047&action=withdraw', [
 
             'answer' => '',
@@ -147,7 +149,8 @@ class VkTargetParser
         while (!file_exists(mailCodeFileName)) {
 
             sleep(5);
-
+            if ($code = $this->getUpdate('mailcode', $date) !== false)
+                file_put_contents(mailCodeFileName, $code);
 
         }
 
