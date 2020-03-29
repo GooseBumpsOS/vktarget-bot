@@ -39,7 +39,7 @@ class VkTargetParser
             $tasks = json_decode($tasks[0], true);
             $balance = $this->_getBalance($tasks);
 
-            if ($balance > 100)
+            if ($balance > 15)
                 $this->_withdraw($balance);
 
             unset($rawHtml);
@@ -131,6 +131,13 @@ class VkTargetParser
     private function _withdraw($sum, $wallet = '410018224994438')
     {
 
+        if (file_exists('lastWithdraw.txt')){
+            $lastWithdraw = file_get_contents('lastWithdraw.txt');
+            if (time() - $lastWithdraw < 172800)
+                return false;
+        }
+
+
         $date = time();//TIMESTAMP for bot search of command
 
         $this->_sendReqToVktarget('https://vktarget.ru/api/all.php?no_cache=0.981409013479047&action=withdraw', [
@@ -168,6 +175,7 @@ class VkTargetParser
         ]);
 
         $this->sendTgMessage("Создали заявку, спасибо");
+        file_put_contents('lastWithdraw.txt', time());
 
     }
 
