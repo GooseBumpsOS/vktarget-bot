@@ -25,14 +25,12 @@ class Auth
     private function _init()
     {
         $db = new JSONDB();
-        $result = $db->select('*')->from(tableName)->where(['isUse' => false])->get();
+        $result = $db->select('*')->from(tableName)->get();
 
         if (count($result) > 0 && !is_null($result))
             $result = $result[0];
         else
             throw new \Exception('Проблемы в БД, вернулся пустой результат');
-
-        $db->update(['isUse' => true])->from(tableName)->where(['isUse' => false])->get();
 
         switch (true) {
 

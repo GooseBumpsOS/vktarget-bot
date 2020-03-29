@@ -9,7 +9,7 @@ use App\Notifier\TelegramMessage;
 
 class VkWorker implements TaskManagerInterface
 {
-    use TelegramMessage;
+    use TelegramMessage { sendTgMessage as private; sendTgUniqueNotification as private;}
 
     private $api_key;
 

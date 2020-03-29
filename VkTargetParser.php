@@ -17,7 +17,7 @@ class VkTargetParser
 
     private $factory = null;
 
-    use TelegramMessage;
+    use TelegramMessage { sendTgMessage as private; sendTgUniqueNotification as private;}
 
     public function __construct(Auth $auth)
     {
