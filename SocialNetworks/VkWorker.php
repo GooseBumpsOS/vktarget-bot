@@ -37,7 +37,7 @@ class VkWorker implements TaskManagerInterface
                 preg_match_all('/(-\d+)|(\d+$)/', $link, $res);//res[0] => owner_id; [1] =>item_id
                 $this->_vkApiGenerator('likes.add', ['item_id' => $res[0][1], 'type' => 'post', 'owner_id' => $res[0][0]]);
                 break;
-            case preg_match('/(поделиться)|(расскажите)/m', $type):
+            case preg_match('/(поделиться)|(Расскажите)/m', $type):
                 preg_match('/[^\/]+$/', $link, $res);
                 $this->_vkApiGenerator('wall.repost', ['object' => $res[0]]);
                 break;

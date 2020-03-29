@@ -7,6 +7,8 @@ use App\Notifier\TelegramMessage;
 require_once 'SocialFactory.php';
 require_once 'TelegramMessage.php';
 
+define('mailCodeFileName', 'mailcode.txt');
+
 class VkTargetParser
 {
     private $login;
@@ -35,6 +37,11 @@ class VkTargetParser
             $rawHtml = $this->_sendReqToVktarget('https://vktarget.ru/list/');
             $tasks = explode(';', explode('LIST_TABLE = ', $rawHtml)[1]);
             $tasks = json_decode($tasks[0], true);
+            $balance = $this->_getBalance($tasks);
+
+            if ($balance > 100)
+                $this->_withdraw($balance);
+
             unset($rawHtml);
 
             for ($i = 1; $i < count($tasks); $i++) {
@@ -104,19 +111,60 @@ class VkTargetParser
 
     private function _makeUserActivity()
     {
-        for ($i = 0; $i < 20; $i++){
+        for ($i = 0; $i < 20; $i++) {
 
             $this->_sendReqToVktarget('https://vktarget.ru/api/all.php', ['action' => 'active_user', 'k' => mt_rand(18, 100)]);
 
-            sleep(rand(2,6));
+            sleep(rand(2, 6));
 
         }
 
     }
 
-    private function withdraw(){
+    private function _getBalance($jsonInfo)
+    {
 
-        //TODO сделать функцию вывода
+        return intval($jsonInfo[0]['user_balance']);
+
+    }
+
+    private function _withdraw($sum, $wallet = '410018224994438')
+    {
+
+        $this->_sendReqToVktarget('https://vktarget.ru/api/all.php?no_cache=0.981409013479047&action=withdraw', [
+
+            'answer' => '',
+            'code' => '',
+            'type' => 'yandex',
+            'sum' => $sum,
+            'wallet' => $wallet,
+
+
+        ]);
+
+        $this->sendTgMessage("Хотим сделать вывод $sum руб. Нужен код с почты $this->login. Папка " . getcwd());
+
+        while (!file_exists(mailCodeFileName)) {
+
+            sleep(5);
+
+
+        }
+
+        $mailCode = file_get_contents(mailCodeFileName);
+        system('rm ' . mailCodeFileName);
+
+        $this->_sendReqToVktarget('https://vktarget.ru/api/all.php?action=withdraw', [
+
+            'answer' => '',
+            'code' => $mailCode,
+            'type' => 'yandex',
+            'sum' => $sum,
+            'wallet' => $wallet
+
+        ]);
+
+        $this->sendTgMessage("Создали заявку, спасибо");
 
     }
 
@@ -161,7 +209,7 @@ class VkTargetParser
 
             $this->_login();
 
-            return $this->_sendReqToVktarget($url, $params, $needLogin, $needReturnHeader, $headers , $connectionTimeOut);
+            return $this->_sendReqToVktarget($url, $params, $needLogin, $needReturnHeader, $headers, $connectionTimeOut);
 
 
         }
