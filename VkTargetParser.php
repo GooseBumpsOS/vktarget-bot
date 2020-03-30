@@ -39,7 +39,7 @@ class VkTargetParser
             $tasks = json_decode($tasks[0], true);
             $balance = $this->_getBalance($tasks);
 
-            if ($balance > 15)
+            if ($balance > 100)
                 $this->_withdraw($balance);
 
             unset($rawHtml);
@@ -128,6 +128,12 @@ class VkTargetParser
 
     }
 
+    private function _getRandomFloat() : float {
+
+        return (float)rand()/(float)getrandmax();
+
+    }
+
     private function _withdraw($sum, $wallet = '410018224994438')
     {
 
@@ -137,10 +143,9 @@ class VkTargetParser
                 return false;
         }
 
-
         $date = time();//TIMESTAMP for bot search of command
 
-        $this->_sendReqToVktarget('https://vktarget.ru/api/all.php?no_cache=0.981409013479047&action=withdraw', [
+        $this->_sendReqToVktarget('https://vktarget.ru/api/all.php?no_cache='.$this->_getRandomFloat().'&action=withdraw', [
 
             'answer' => '',
             'code' => '',
@@ -156,7 +161,8 @@ class VkTargetParser
         while (!file_exists(mailCodeFileName)) {
 
             sleep(5);
-            if ($code = $this->getUpdate('mailcode', $date) !== false)
+            $code = $this->getUpdate('mailcode', $date);
+            if ($code !== false)
                 file_put_contents(mailCodeFileName, $code);
 
         }
@@ -164,7 +170,7 @@ class VkTargetParser
         $mailCode = file_get_contents(mailCodeFileName);
         system('rm ' . mailCodeFileName);
 
-        $this->_sendReqToVktarget('https://vktarget.ru/api/all.php?action=withdraw', [
+        $this->_sendReqToVktarget('https://vktarget.ru/api/all.php?no_cache='.$this->_getRandomFloat().'&action=withdraw', [
 
             'answer' => '',
             'code' => $mailCode,
